@@ -1,233 +1,342 @@
-<!DOCTYPE html>
+<!doctype html>
+<div id="fixed-wrapper">
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Good Night Araa</title>
-<style>
-  /* Reset & basic */
-  * {
-    margin: 0; padding: 0; box-sizing: border-box;
-  }
-  body {
-    background: radial-gradient(ellipse at bottom, #0b0c22 0%, #000014 100%);
-    overflow-x: hidden;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: yellow;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-    position: relative;
-  }
-  /* Container */
-  .container {
-    max-width: 900px;
-    width: 100%;
-    position: relative;
-    z-index: 10;
-  }
-  /* Music player */
-  .music-player {
-    width: 100%;
-    background: rgba(255 255 255 / 0.1);
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  audio {
-    width: 100%;
-    outline: none;
-  }
-  /* Video wrapper */
-  .video-wrapper {
-    position: relative;
-    width: 100%;
-    padding-top: 56.25%; /* 16:9 ratio */
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 0 20px rgba(255,255,0,0.4);
-  }
-  video {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 12px;
-  }
-  /* Text typing effect */
-  .typed-text {
-    margin-top: 20px;
-    font-size: 14px;
-    line-height: 1.4;
-    min-height: 6em;
-    color: yellow;
-    white-space: pre-wrap;
-    font-weight: 500;
-    font-family: monospace;
-  }
-  /* Stars & meteors canvas full screen */
-  #stars-canvas {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    z-index: 1;
-  }
-  /* Saturnus image */
-  .saturn {
-    margin-top: 15px;
-    display: block;
-    width: 80px;
-    filter: drop-shadow(0 0 6px yellow);
-  }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Website Bucin — Lembaran Foto</title>
+  <style>
+    :root{
+      --bg: linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%);
+      --card: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.9));
+      --accent: #FF6B6B;
+      --text: #2b2b2b;
+    }
+
+    /* Theme variants (will be applied by JS) */
+    .theme-warna { --bg: linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%); --card: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.9)); --accent: #FF6B6B; --text: #2b2b2b; }
+    .theme-pastel { --bg: linear-gradient(135deg, #f6d365 0%, #fda085 100%); --card: linear-gradient(180deg, rgba(255,255,255,0.97), rgba(255,255,255,0.94)); --accent: #7F8CFF; --text: #333; }
+    .theme-mono   { --bg: linear-gradient(135deg, #f5f5f5 0%, #d9d9d9 100%); --card: linear-gradient(180deg, rgba(255,255,255,0.99), rgba(250,250,250,0.96)); --accent: #111827; --text: #111827; }
+
+.lyrics-box {
+  width: 100%;
+  background: rgba(255,255,255,0.85);
+  padding: 16px;
+  border-radius: 12px;
+  margin-top: 20px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
+
+.lyrics-box h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.lyrics-content {
+  max-height: 220px;
+  overflow-y: auto;
+  white-space: pre-line;
+  line-height: 1.5;
+}
+
+ /* Tidak ikut layar */
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* hilangkan scroll */
+  background: #222; /* biar ada background luar seperti screenshot */
+}
+
+/* AREA WEBSITE NGUNCI (tidak mengikuti layar) */
+#fixed-wrapper {
+  width: 600px;    /* ukuran fix yang tidak berubah */
+  height: 900px;   /* kamu bisa ubah sesuka hati */
+  margin: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* selalu di tengah */
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--bg);
+}
+
+    body{
+  background: #222;   /* background luar */
+  margin:0;
+  padding:0;
+  overflow:hidden;    /* biar tidak bisa scroll */
+}
+
+    .container{
+  width:100%;
+  max-width:600px;       /* supaya tidak terlalu kecil & tetap proporsional */
+  margin:0 auto;
+  transform: scale(1);   /* kunci tampilan */
+}
+
+body{
+  background: var(--bg);
+  min-height:100vh;
+  margin:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:0;
+}
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      margin-bottom:18px;
+    }
+
+    h1{
+      margin:0;
+      font-size:28px;
+      line-height:1.05;
+      font-weight:800;
+      letter-spacing:-0.6px;
+    }
+
+    .controls select{
+      padding:8px 12px;
+      border-radius:10px;
+      border:1px solid rgba(0,0,0,0.08);
+      background:white;
+      font-size:14px;
+    }
+
+    main.grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:18px;
+    }
+
+    @media(min-width:800px){
+      main.grid{ grid-template-columns: 1fr 1fr; }
+    }
+
+    .card{
+      position:relative;
+      padding:18px;
+      border-radius:18px;
+      background:var(--card);
+      box-shadow: 0 14px 30px rgba(11,22,57,0.12);
+      overflow:visible;
+    }
+
+    .polaroid{
+      background:white;
+      border-radius:12px;
+      overflow:hidden;
+      border:1px solid rgba(0,0,0,0.05);
+      box-shadow: 0 10px 22px rgba(11,22,57,0.08);
+    }
+
+    .polaroid img{
+      display:block;
+      width:100%;
+      height:360px;
+      object-fit:cover;
+    }
+
+    .caption{
+      padding:12px;
+      text-align:center;
+    }
+
+    .caption .title{
+      font-weight:700;
+      margin-bottom:6px;
+    }
+
+    .sheet-note{
+      position:absolute;
+      left:-18px;
+      top:-18px;
+      width:64px;
+      height:64px;
+      border-radius:10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      color:white;
+      transform:rotate(6deg);
+      opacity:0.9;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    .bottom-label{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:12px;
+      background:rgba(255,255,255,0.8);
+      padding:6px 12px;
+      border-radius:999px;
+      font-size:12px;
+      backdrop-filter: blur(4px);
+      border:1px solid rgba(0,0,0,0.04);
+    }
+
+    footer{
+      margin-top:18px;
+      text-align:center;
+      font-size:13px;
+      opacity:0.9;
+    }
+
+    /* small helpers */
+    .small { font-size:13px; color:rgba(0,0,0,0.6); }
+  </style>
 </head>
-<body>
+<body class="theme-mono">
+  <div class="container">
+    <header>
+      <h1>Lembaran Foto — Website Bucin</h1>
+      <div class="controls">
+        <label for="theme-select" class="small" style="display:block;margin-bottom:6px;text-align:right;">Pilih Tema</label>
+        <select id="theme-select" aria-label="Pilih tema">
+          <option value="warna">Warna-warni</option>
+          <option value="pastel">Pastel</option>
+          <option value="mono">Monochrome</option>
+        </select>
+      </div>
+    </header>
 
-<!-- Canvas for stars and meteor -->
-<canvas id="stars-canvas"></canvas>
+    <main class="grid" id="gallery">
+      <!-- Photo cards (HANYA lewat URL, bukan upload) -->
+      <article class="card">
+        <div class="polaroid" aria-hidden="false">
+          <img src="foto1.jpg" alt="Kenangan pasangan 1" />
+          <div class="caption">
+            <div class="title">xixixi</div>
+            <div class="small">Lembar foto penuh cinta</div>
+          </div>
+        </div>
 
-<div class="container">
-  <!-- Music player -->
-  <div class="music-player">
-    <audio controls loop>
-      <source src="https://files.catbox.moe/ti1xjr.mp4" type="audio/mpeg" />
-      Your browser does not support the audio element.
-    </audio>
+        <div class="sheet-note" id="note1">♫</div>
+      </article>
+
+      <article class="card">
+        <div class="polaroid" aria-hidden="false">
+          <img src="foto2.jpg" alt="Kenangan pasangan 2" />
+          <div class="caption">
+            <div class="title">apayaa</div>
+            <div class="small">Tersimpan di lembaran</div>
+          </div>
+        </div>
+
+        <div class="sheet-note" id="note2">♫</div>
+              </article>
+    </main>
+
+    <footer>
+      Hanya bisa mengganti tema — tidak ada fitur upload. Cocok untuk tampilan album romantis &amp; "bucin".
+    </footer>
   </div>
-
-  <!-- Video -->
-  <div class="video-wrapper">
-    <video autoplay muted loop>
-      <source src="https://files.catbox.moe/ti1xjr.mp4" type="video/webm" />
-      Your browser does not support the video tag.
-    </video>
-  </div>
-
-  <!-- Typed Text -->
-  <div class="typed-text" id="typed-text"></div>
-
-  <!-- Saturn planet -->
-  <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Saturn_during_Equinox.jpg" alt="Saturnus" class="saturn" />
+  
+  
+  <!-- 🎵 PLAYER MUSIK MANUAL -->
+<div class="music-box" style="
+  background:theme-warna;
+  padding:10px;
+  border-radius:12px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.12);
+  border:1px solid #eee;
+  margin-bottom:14px;
+">
+  <strong>🎵 Putar Lagu</strong><br>
+  <audio controls style="width:100%; margin-top:6px;">
+    <source src="musik.mp3" type="audio/mp3">
+  </audio>
 </div>
 
-<script>
-  // Typed text effect
-  const text = `Good night sayangggkuuu(kunti nafisaa puri), gimanaa hariii inii happy or no? , jangann sedih yaaa, haruss happy tentunyaa , kan udaa adaa aku di hidup kamu masa kamuu gaa happy sii emm, oh iyaa aku mau ngomong nihh, kalo misalkan kamuu hari hari ini lagi gak baik baik ajaa kamuu harus ingett yahh, kamu punya aku jadi jangan kamu gengsi buat bertukar cerita ingett lohh, kita harus sama sama geboleh sendiri, aku punya kamu and kamu punya aku, kita gak harus menjadi kuat yahhh intinya kita harus bareng bareng buat hadapin semuanya oteyyy sayanggg, selamatt bobo sayangggg semoga mimpi indah hhee, semangattt yaaa buat jalanin hari hari nyaa hihii, I love youu sayanggggg`;
+  
+  
+  
+  <!-- 🎵 LIRIK LAGU -->
+<div class="lyrics-box">
+  <h3>🎶 Lirik Lagu: Iris</h3>
 
-  const typedTextEl = document.getElementById('typed-text');
-  let index = 0;
+  <div class="lyrics-content">
+    <!-- MASUKKAN LIRIKMU DI SINI -->
+    And I'd give up forever to touch you
+'Cause I know that you feel me somehow
+You're the closest to Heaven that I'll ever be
+And I don't wanna go home right now
+And all I can taste is this moment
+And all I can breathe is your life
+And sooner or later, it's over
+I just don't wanna miss you tonight
+And I don't want the world to see me
+'Cause I don't think that they'd understand
+When everything's made to be broken
+I just want you to know who I am
+And you can't fight the tears that ain't coming
+Or the moment of truth in your lies
+When everything feels like the movies
+Yeah, you bleed just to know you're alive
+And I don't want the world to see me
+'Cause I don't think that they'd understand
+When everything's made to be broken
+I just want you to know who I am
+And I don't want the world to see me
+'Cause I don't think that they'd understand
+When everything's made to be broken
+I just want you to know who I am
+And I don't want the world to see me
+'Cause I don't think that they'd understand
+When everything's made to be broken
+I just want you to know who I am
+I just want you to know who I am
+I just want you to know who I am
+I just want you to know who I am
+  </div>
+</div>
+  
+  <script>
+    // Theme switching: hanya mengubah kelas pada <body>.
+    const select = document.getElementById('theme-select');
+    const body = document.body;
 
-  function typeWriter() {
-    if (index < text.length) {
-      typedTextEl.textContent += text.charAt(index);
-      index++;
-      setTimeout(typeWriter, 50);
+    // Map select values to body class names
+    const map = {
+      warna: 'theme-warna',
+      pastel: 'theme-pastel',
+      mono:  'theme-mono'
+    };
+
+    function applyTheme(val){
+      // Remove possible theme classes
+      body.classList.remove('theme-warna','theme-pastel','theme-mono');
+      const cls = map[val] || 'theme-mono';
+      body.classList.add(cls);
+
+      // Update bottom label texts to reflect theme name (optional)
+      const labels = document.querySelectorAll('.bottom-label');
+      labels.forEach((el, idx) => {
+        const base = ['Lembaran warna-warni','Lembar foto pastel','Lembaran monokrom'][['warna','pastel','mono'].indexOf(val)];
+        el.textContent = `Foto ${idx+1} — ${base || 'Lembaran warna-warni'}`;
+      });
     }
-  }
-  typeWriter();
 
-  // Stars and meteor effect
-  const canvas = document.getElementById('stars-canvas');
-  const ctx = canvas.getContext('2d');
-  let width, height;
+    // Init with current selection
+    select.addEventListener('change', (e) => applyTheme(e.target.value));
+    applyTheme(select.value);
 
-  function resize() {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  // Star class
-  class Star {
-    constructor() {
-      this.x = Math.random() * width;
-      this.y = Math.random() * height;
-      this.radius = Math.random() * 1.2;
-      this.alpha = Math.random();
-      this.alphaChange = 0.005 + Math.random() * 0.005;
-    }
-    draw() {
-      this.alpha += this.alphaChange;
-      if (this.alpha <= 0 || this.alpha >= 1) this.alphaChange *= -1;
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255,255,255,${this.alpha})`;
-      ctx.fill();
-    }
-  }
-
-  // Meteor class
-  class Meteor {
-    constructor() {
-      this.reset();
-    }
-    reset() {
-      this.x = Math.random() * width;
-      this.y = Math.random() * -height;
-      this.len = 80 + Math.random() * 100;
-      this.speed = 6 + Math.random() * 4;
-      this.size = 1 + Math.random() * 1.5;
-      this.angle = Math.PI / 4; // 45 degrees
-      this.opacity = 1;
-    }
-    update() {
-      this.x += this.speed * Math.cos(this.angle);
-      this.y += this.speed * Math.sin(this.angle);
-      this.opacity -= 0.02;
-      if (this.opacity <= 0) this.reset();
-    }
-    draw() {
-      ctx.save();
-      ctx.beginPath();
-      ctx.strokeStyle = `rgba(255, 255, 255, ${this.opacity})`;
-      ctx.lineWidth = this.size;
-      ctx.shadowColor = "white";
-      ctx.shadowBlur = 10;
-      ctx.moveTo(this.x, this.y);
-      ctx.lineTo(this.x - this.len * Math.cos(this.angle), this.y - this.len * Math.sin(this.angle));
-      ctx.stroke();
-      ctx.restore();
-    }
-  }
-
-  // Create stars and meteors
-  const stars = [];
-  const numStars = 200;
-  for (let i = 0; i < numStars; i++) {
-    stars.push(new Star());
-  }
-
-  const meteors = [];
-  const numMeteors = 5;
-  for (let i = 0; i < numMeteors; i++) {
-    meteors.push(new Meteor());
-  }
-
-  // Animate everything
-  function animate() {
-    ctx.clearRect(0, 0, width, height);
-    // Draw stars
-    stars.forEach(star => star.draw());
-    // Draw meteors
-    meteors.forEach(meteor => {
-      meteor.update();
-      meteor.draw();
+    // Accessibility: keyboard focus visible (for Acode + mobile)
+    document.addEventListener('keyup', (e) => {
+      if(e.key === 'Tab') document.body.classList.add('kbd');
     });
-    requestAnimationFrame(animate);
-  }
-  animate();
-</script>
-
+  </script>
 </body>
-  </html>
+</html>
+</div>
